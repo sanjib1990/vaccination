@@ -1,4 +1,4 @@
-from config import AGES, PINCODES
+from config import AGES, PINCODES, DAYS
 from cowin.cowin import CoWin
 from hooks.slack import SlackNotification
 
@@ -23,6 +23,6 @@ def run():
 
     # Returns the details of slots available in area with
     # pincode 462003
-    result = cw.check_by_pincodes(pincodes=PINCODES, ages=AGES, payment='Free')
+    result = cw.check_by_pincodes(pincodes=PINCODES, ages=AGES, payment='Free', days=DAYS)
     slack.send(centers=result)
     print(result)

@@ -11,7 +11,7 @@ class RestAPI(object):
              headers=None, data=None) -> Union[HTTPError, dict]:
         logger = get_logger(__name__)
         user_agent = random_user_agent()
-        logger.debug(f"{user_agent = }")
+        logger.debug(f"{user_agent}")
         headers = {'User-Agent': user_agent}
         module = __import__('requests')
         rest_method = getattr(module, rest_method_name)
@@ -21,11 +21,3 @@ class RestAPI(object):
         except HTTPError as e:
             return False, e
         return True, response.json()
-
-
-if __name__ == "__main__":
-    ra = RestAPI()
-    data = ra.call(
-        "get",
-        "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=462003&date=20-05-2021")
-    print(f"{data = }")

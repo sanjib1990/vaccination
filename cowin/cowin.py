@@ -1,4 +1,5 @@
-from datetime import date
+import datetime
+from datetime import date, timedelta
 from typing import List
 
 from cowin.utils.logit import get_logger
@@ -21,18 +22,20 @@ class CoWin(API):
                          "{criteria}&date={today}")
         }
 
-    def call_cowin(self, criteria_type, criteria, filters=None):
-        self.logger.debug(f"{criteria_type = }, {criteria = }, {filters = }")
-        today = date.today().strftime("%d-%m-%Y")
+    def call_cowin(self, criteria_type, criteria, filters=None, date_=None):
+        self.logger.info(f"{criteria_type}, {criteria}, {filters}, {date_}")
+        today = date_
+        if not today:
+            today = date.today().strftime("%d-%m-%Y")
         flg, result = self.call(self.urls[criteria_type][0],
                                 self.urls[criteria_type][1].format(criteria=criteria,
                                                                    today=today))
-        self.logger.debug(f"API call result: {flg = }, {result = }")
+        self.logger.debug(f"API call result: {flg}, {result}")
         if criteria_type in ("pincode", "district"):
             ret_val = result['centers'] if flg else result
         else:
             ret_val = result[criteria_type] if flg else result
-        self.logger.debug(f"returning {ret_val = }")
+        self.logger.debug(f"returning {ret_val}")
         return ret_val
 
     # Lets apply filter
@@ -56,24 +59,43 @@ class CoWin(API):
                 selected_centers.append(center)
         return selected_centers
 
-    def check_by_pincodes(self, pincodes: List[int], payment="any", ages: List[int]=None):
+    def check_by_pincodes(self, pincodes: List[int], payment="any", ages: List[int]=None, days=None):
         if not ages:
             ages = [45]
         res = {}
-        for x in pincodes:
-            if x not in res:
-                res[x] = {}
-            for a in ages:
-                res[x][a] = self.check_by_pincode(pincode=x, age=a, payment=payment)
-                pass
-            pass
+        if not days:
+            days = 1
+        count = 0
+        curr: datetime = datetime.datetime.today() + timedelta(3)
+        count += 3
+        while True:
+            if count >= days:
+                break
+            if curr.weekday() >= 5:
+                curr += timedelta(1)
+                continue
 
+            for x in pincodes:
+                if x not in res:
+                    res[x] = {}
+                for a in ages:
+                    if a not in res[x]:
+                        res[x][a] = {}
+
+                    res[x][a][curr.strftime("%d-%m-%Y")] = self.check_by_pincode(pincode=x, age=a, payment=payment, date_=curr.strftime("%d-%m-%Y"))
+                    pass
+                pass
+            curr += timedelta(1)
+            count += 1
+            pass
         return res
 
-    def check_by_pincode(self, pincode: int, age: int = 45, payment="any"):
-        centers = self.call_cowin("pincode", pincode)
-        # from src.cowin.dummy_resp import get_dummy_slots, get_dummy_no_slots
+    def check_by_pincode(self, pincode: int, age: int = 45, payment="any", date_=None):
+        centers = self.call_cowin("pincode", pincode, date_=date_)
+        # from cowin.dummy_resp import get_dummy_slots, get_dummy_no_slots
         # centers = get_dummy_slots()
+        if type(centers) is not list:
+            return []
         result = self.apply_filter(centers, age, payment)
         return result
 
