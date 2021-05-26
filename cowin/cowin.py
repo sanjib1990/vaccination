@@ -91,9 +91,9 @@ class CoWin(API):
         return res
 
     def check_by_pincode(self, pincode: int, age: int = 45, payment="any", date_=None):
-        centers = self.call_cowin("pincode", pincode, date_=date_)
-        # from cowin.dummy_resp import get_dummy_slots, get_dummy_no_slots
-        # centers = get_dummy_slots()
+        # centers = self.call_cowin("pincode", pincode, date_=date_)
+        from cowin.dummy_resp import get_dummy_slots, get_dummy_no_slots
+        centers = get_dummy_slots()
         if type(centers) is not list:
             return []
         result = self.apply_filter(centers, age, payment)

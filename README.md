@@ -9,7 +9,7 @@ This project is built to notify about the availability of COVID vaccine in given
 - virtualenv
 - internet connection ;)
 
-##Setup
+## Setup
 
 - Clone the project
 - cd to the project

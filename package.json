@@ -1,0 +1,20 @@
+{
+  "name": "vaccination",
+  "version": "1.0.0",
+  "description": "Deployment of the codebase only. JS",
+  "main": "flightplan.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@sanjib1990:sanjib1990/vaccination.git"
+  },
+  "author": "devnath.sanjib@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "flightplan": "^0.6.20",
+    "minimist": "^1.2.5"
+  }
+}
