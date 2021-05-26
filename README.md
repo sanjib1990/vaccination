@@ -22,3 +22,19 @@ This project is built to notify about the availability of COVID vaccine in given
 ## Running the code
 
 To run the code we simply need to do `python main.py`
+
+## Deployment
+
+### Requirements
+
+- node
+
+### Setup
+
+- `npm install`
+- update .env properly
+
+### steps
+
+- fly deploy --env=prod
+
