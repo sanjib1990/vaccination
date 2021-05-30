@@ -66,7 +66,7 @@ class CoWin(API):
         if not days:
             days = 1
         count = 0
-        curr: datetime = datetime.datetime.today() + timedelta(3)
+        curr: datetime = datetime.datetime.today() + timedelta(1)
         count += 1
         while True:
             if count >= days:
