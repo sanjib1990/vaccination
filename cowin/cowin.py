@@ -67,14 +67,9 @@ class CoWin(API):
             days = 1
         count = 0
         curr: datetime = datetime.datetime.today() + timedelta(3)
-        count += 3
         while True:
             if count >= days:
                 break
-            if curr.weekday() >= 5:
-                curr += timedelta(1)
-                continue
-
             for x in pincodes:
                 if x not in res:
                     res[x] = {}
