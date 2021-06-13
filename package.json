@@ -4,7 +4,8 @@
   "description": "Deployment of the codebase only. JS",
   "main": "flightplan.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "fly deploy"
   },
   "repository": {
     "type": "git",

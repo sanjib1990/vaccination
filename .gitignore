@@ -3,6 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=macos,flask,python,visualstudiocode
 
 ### Project ###
+package-lock.json
 ignore_folder
 logs/*
 .dgt/
